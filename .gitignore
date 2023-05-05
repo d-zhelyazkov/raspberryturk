@@ -131,3 +131,7 @@ ENV/
 
 data/
 *.png
+
+notebooks/office_images/
+
+notebooks/raw_images/
