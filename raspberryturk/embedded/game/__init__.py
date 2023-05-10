@@ -1,18 +1,19 @@
-import os
 import logging
+import os
+import time
 from pathlib import Path
 
 import chess
-import time
-from raspberryturk import games_path
 from chess.pgn import read_game, Game, FileExporter
 
+from raspberryturk import games_path
 from raspberryturk.core import mkdir
 
 TEMPORARY_GAME_PATH = Path(os.path.extsep.join(['tmp', 'pgn']))
 mkdir(TEMPORARY_GAME_PATH.parent)
 CURRENT_GAME_PATH = Path(games_path(os.path.extsep.join(['game', 'pgn'])))
 mkdir(CURRENT_GAME_PATH.parent)
+
 
 def _logger():
     return logging.getLogger(__name__)
@@ -84,6 +85,30 @@ def setup_games_repo():
             "git commit -m \"Initial commit\""
         ]
         os.system(";".join(commands))
+
+
+def move(cells):
+    cells = list(map(
+        lambda cell: cell if isinstance(cell, str) else cell_str(cell),
+        cells
+    ))
+    b = get_board()
+    for m in b.legal_moves:
+        if all(map(m.uci().__contains__, cells)):
+            return m
+
+    raise ValueError(
+        f"Unsupported move {cells} for board\n{b}"
+    )
+
+
+def cell_str(num):
+    return chr(97 + num % 8) + str(int(num / 8) + 1)
+
+
+def cells_strs(cells_nums):
+    return list(map(cell_str, cells_nums))
+
 
 def _sync():
     _logger().info("Syncing games...")

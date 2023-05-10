@@ -13,3 +13,4 @@ bottom_right = [[730, 750]]  # y delta olnly first column
 pts1 = np.float32([top_left, bottom_right, top_right, bottom_left, ])
 pts2 = np.float32([[0, 0], [BOARD_SIZE, BOARD_SIZE], [BOARD_SIZE, 0], [0, BOARD_SIZE], ])
 M = cv2.getPerspectiveTransform(pts1, pts2)
+ROTATION = cv2.ROTATE_180
