@@ -54,7 +54,7 @@ def enter_game(fn):
             raise e
     os.symlink(fn, CURRENT_GAME_PATH)
     _logger().info("Entered game {} -> {}".format(CURRENT_GAME_PATH, fn))
-    _sync()
+    # _sync()
 
 def get_board() -> chess.Board:
     g = _game()
