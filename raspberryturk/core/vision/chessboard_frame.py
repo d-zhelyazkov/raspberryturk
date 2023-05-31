@@ -16,9 +16,9 @@ class ChessboardFrame():
         return Square(i, self.img[y:y + SQUARE_SIZE, x:x + SQUARE_SIZE])
 
 
-def get(img_read):
-    img_roi = img_read[ROI[0]:ROI[1], ROI[2]:ROI[3]]
-    img_captured = cv2.resize(img_roi, (BOARD_SIZE, BOARD_SIZE))
+def get(img):
+    # img = img_read[ROI[0]:ROI[1], ROI[2]:ROI[3]]
+    img_captured = cv2.resize(img, (BOARD_SIZE, BOARD_SIZE))
     warped = cv2.warpPerspective(img_captured, M, (BOARD_SIZE, BOARD_SIZE))
     img = cv2.rotate(warped, ROTATION)
     return img
