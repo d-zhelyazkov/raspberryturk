@@ -8,13 +8,15 @@ __author__ = 'Joey Meyer'
 __email__ = 'jmeyer41@gmail.com'
 __version__ = '0.0.1-beta'
 
+from threading import Timer
+
 app_directory = 'raspberryturk'
 
 def _root():
     return os.path.abspath(os.sep)
 
 def _var_subdir(subdir, *paths):
-    return os.path.join(_root(), 'var', subdir, app_directory, *paths)
+    return os.path.join('var', subdir, app_directory, *paths)
 
 def cache_path(*paths):
     return _var_subdir('cache', *paths)
@@ -38,7 +40,8 @@ class RaspberryTurkError(Exception):
     pass
 
 def is_running_on_raspberryturk():
-    return gethostname() == 'raspberryturk'
+    # return gethostname() == 'raspberryturk'
+    return True
 
 LOGGING_FORMAT = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 
@@ -63,3 +66,9 @@ def active_log_stream():
 
 def active_log_path():
     return active_log_stream().name
+
+
+class RepeatTimer(Timer):
+    def run(self):
+        while not self.finished.wait(self.interval):
+            self.function(*self.args, **self.kwargs)
